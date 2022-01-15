@@ -1,17 +1,29 @@
+require('./functions/db');
+
 const fastify = require('fastify');
 const session = require('@fastify/session');
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongodb-session')(session);
 const { loadSettings } = require('./functions/loadSettings');
 const { join } = require('path');
 
 const settings = loadSettings();
-const app = fastify({ logger: false });
-
-require('./functions/db');
+const app = fastify({
+    logger:{
+        prettyPrint:{
+            translateTime: 'HH:MM:ss Z',
+            ignore: 'pid,hostname'
+        }
+    }
+});
 
 app.register(require('fastify-cookie'), {
     secret: settings.website.secret, // for cookies signature
     parseOptions: {}     // options for parsing cookies
+});
+
+const store = new MongoStore({
+    uri: settings.database.connection_uri,
+    collection: 'sessions'
 });
 
 app.register(session, {
@@ -19,11 +31,9 @@ app.register(session, {
     resave: true,
     saveUninitialized: true,
     cookie:{
-        secure: settings.website.secure,
+        secure: settings.website.secure
     },
-    store: new MongoStore({
-        mongoUrl: settings.database.connection_uri
-    })
+    store
 });
 
 app.register(require('point-of-view'), {
@@ -35,14 +45,8 @@ app.register(require('point-of-view'), {
 
 app.register(require('fastify-formbody'));
 
-app.route({
-    url: '/auth',
-    method: 'POST',
-    handler: require('./auth/login')
-});
-app.poist('/a')
-app.all('/', require('./handler'));
-app.addHook('onError', console.error);
+app.all('/auth/*', require('./auth/login'));
+app.all('*', require('./handler'));
 
 app.listen(settings.website.port, (err, address) => {
     if (err) throw err;

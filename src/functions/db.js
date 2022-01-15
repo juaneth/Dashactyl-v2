@@ -77,195 +77,111 @@ async function getAllAccounts() {
     return await db.collection("users").find({}).toArray();
 }
 
-async function fetchAccount(id) {
-    return await db.collection("users").findOne({ discordID: id });
+async function fetchAccount(email) {
+    return await db.collection('users').findOne({ email });
 }
 
 async function createAccount(data) {
-    const collection = db.collection("users");
-    const user = await collection.findOne({ discordID: data.id });
-    if (user) return user;
-
-    let password;
-    if (settings.pterodactyl.generate_password_on_signup) {
-        password =
+    const password =
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
-    }
 
-    const res = await fetch(
-        `${settings.pterodactyl.domain}/api/application/users`,
-        {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${settings.pterodactyl.key}`,
-        },
-        body: JSON.stringify({
-            username: data.id,
-            email: data.email,
-            first_name: data.username,
-            last_name: data.discriminator,
-            password,
-        }),
+    let panelData;
+    let res = await fetch(
+        `${settings.pterodactyl.domain}/api/application/users?filter[email]=${data.email}`, {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${settings.pterodactyl.key}`
+            }
         }
     );
 
-    if (res.status === 201) {
-        const json = (await res.json()).attributes;
-        await collection.insertOne({
-        discordID: data.id,
-        pterodactylID: json.id,
-        coins: 0,
-        package: "default",
-        memory: 0,
-        disk: 0,
-        cpu: 0,
-        servers: 0,
-        dateAdded: Date.now(),
-        });
+    if (res.ok) {
+        panelData = (await res.json()).data[0];
+    }
 
-        json.password &&= password;
-        json.relationships = {
-        servers: {
-            object: "list",
-            data: [],
-        },
-        };
-
-        return json;
-    } else {
-        const accountlistjson = await fetch(
-        `${
-            settings.pterodactyl.domain
-        }/api/application/users?include=servers&filter[email]=${encodeURIComponent(
-            data.email
-        )}`,
-        {
-            method: "get",
-            headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${settings.pterodactyl.key}`,
-            },
-        }
+    if (!panelData) {
+        res = await fetch(
+            `${settings.pterodactyl.domain}/api/application/users`, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${settings.pterodactyl.key}`
+                },
+                body: JSON.stringify({ ...data, password })
+            }
         );
-
-        if (res.status === 201) {
-        const json = (await res.json()).attributes;
-        await collection.insertOne({
-            discordID: data.id,
-            pterodactylID: json.id,
-            password,
-            coins: 0,
-            package: "default",
-            memory: 0,
-            disk: 0,
-            cpu: 0,
-            servers: 0,
-            dateAdded: Date.now(),
-        });
-
-        json.password ||= password;
-        json.relationships = {
-            servers: {
-            object: "list",
-            data: [],
-            },
-        };
-
-        return user[0].attributes;
+        if (res.ok) {
+            panelData = (await res.json()).attributes;
+        } else {
+            return null;
         }
-
-        return false;
-    }
     }
 
-    async function deleteAccount(id) {
-    return await db.collection("users").deleteOne({ discordID: id });
+    const userData = {
+        ...data,
+        password,
+        coins: 0,
+        package: 'default',
+        resources:{
+            ram: '0',
+            disk: '0',
+            cpu: '0',
+            servers: '0'
+        },
+        created_at: Date.now()
     }
 
-    async function checkBlacklisted(id) {
-    const data = await db.collection("blacklisted").findOne({ discordID: id });
+    await db.collection('users').insertOne(userData);
+    return userData;
+}
 
+async function deleteAccount(email) {
+    return await db.collection('users').deleteOne({ email });
+}
+
+async function checkBlacklisted(email) {
+    const data = await db.collection('blacklisted').findOne({ email });
     return !!data;
-    }
+}
 
-    async function getPackages(name = null) {
-    const packages = await db.collection("packages").find({}).toArray();
-
+async function getPackages(name = null) {
+    const packages = await db.collection('packages').find({}).toArray();
     if (!name) return packages;
-    if (name === "default") return packages.find((p) => p.default);
+    if (name === 'default') return packages.find((p) => p.default);
     return packages.find((p) => p.name === name);
+}
+
+async function addPackage(name, memory, disk, cpu, servers, isDefault) {
+    const packages = await getPackages();
+    if (packages.find(p => p.name === name)) return false;
+
+    if (isDefault) {
+        const old = packages.find(p => p.default);
+        if (old) await db.collection('packages').updateOne(
+            { name: old.name },
+            { $set:{ default: false }}
+        );
     }
 
-    async function addPackage(name, memory, disk, cpu, servers, isDefault) {
-    const packages = await getPackages();
-    if (packages.find((p) => p.name === name)) return false;
-
-    await db.collection("packages").insertOne({
+    await db.collection('packages').insertOne({
         name,
         memory,
         disk,
         cpu,
         servers,
         default: isDefault,
-        dateAdded: Date.now(),
+        date_added: Date.now()
     });
 
     return true;
-    }
+}
 
-    async function deletePackage(name) {
+async function deletePackage(name) {
     await db.collection("packages").deleteOne({ name });
-    }
-    async function setResources(id, resources) {
-    const collection = await db.collection("users");
-    if (!collection) return false;
-    const user = await collection.findOne({ discordID: id });
-    if (!user) return false;
-    if (!resources.memory) {
-        resources.memory = user.memory;
-    }
-
-    if (!resources.disk) {
-        resources.disk = user.disk;
-    }
-
-    if (!resources.cpu) {
-        resources.cpu = user.cpu;
-    }
-
-    if (!resources.servers) {
-        resources.servers = user.servers;
-    }
-
-    const config = await collection.updateOne(
-        { discordID: id },
-        {
-        $set: { ...resources },
-        }
-    );
-    return config;
-    }
-    async function setCoins(id, coins) {
-    const collection = await db.collection("users");
-    if (!collection) return false;
-    const user = await collection.findOne({ discordID: id });
-    if (!user) return false;
-
-    if (typeof coins !== "number") return false;
-
-    const config = await collection.updateOne(
-        { discordID: id },
-        {
-        $set: {
-            coins: coins,
-        },
-        }
-    );
-
-    return config;
 }
 
 module.exports = {
@@ -276,7 +192,5 @@ module.exports = {
     checkBlacklisted,
     getPackages,
     addPackage,
-    deletePackage,
-    setResources,
-    setCoins
+    deletePackage
 }
