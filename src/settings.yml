@@ -1,0 +1,21 @@
+website:
+  port: 5000 # The port Dashactyl will run.
+  secure: false ## This REQUIRES https.
+  theme: default  # The theme/style Dashactyl will use.
+  secret: wYt9U248ENybMuYB9aWMPrNAf97EmDfwsKMYkGmVz5yhyGthrGyHJUWvZjMUp9VHgDN9pRBwgfWF9xxUF6uwD6e98c93rSZ9apBfGesLzAQX9rh6URKuKkQcYYTbKePmFNhqZzGHvrNawpXs4F2D7SuhnPWJ5XP4f4mrF2jWAUmnQwXW75kbcT4ggd8EVrsC8cfSu48FP563dHYTF7cWTHCqYaZ2J9Pz6nzLgt6wLaM4Zw4CbEYjRwYL8gyb8cJV
+
+discord:
+  id: "917469447235727372"
+  token: OTE3NDY5NDQ3MjM1NzI3Mzcy.Ya5KAQ.JIGgSzt7Zp4DM2Z84T-ol0wk9Z0
+  secret: PBU8O5tawUlN8mQ5gYql77T-pjTffWrG
+  callback: http://localhost:5000/auth/callback
+  prompt: https://discord.gg/kTw8x4CH9c
+  guild_id: ""
+
+pterodactyl:
+  domain: https://dev.techhost.live
+  key: HPGdg1Ydirzwrk83dPzsCBp1IccujU8LRpAwyjW3mlxXdOoa
+
+database:
+  name: dashactyl-testing
+  connection_uri: mongodb+srv://dashactyl:dashactyl@dashactyltesting.axlqa.mongodb.net
