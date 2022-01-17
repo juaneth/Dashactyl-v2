@@ -8,12 +8,14 @@ const { join } = require('path');
 
 const settings = loadSettings();
 const app = fastify({
-    logger:{
-        prettyPrint:{
-            translateTime: 'HH:MM:ss Z',
-            ignore: 'pid,hostname'
+    logger: settings.website.logger
+        ? {
+            prettyPrint:{
+                translateTime: 'HH:MM:ss Z',
+                ignore: 'pid,hostname'
+            }
         }
-    }
+        : false
 });
 
 app.register(require('fastify-cookie'), {

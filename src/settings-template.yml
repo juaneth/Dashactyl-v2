@@ -3,6 +3,7 @@ website:
   secret: ""
   secure: false
   theme: default
+  logger: false
 
 discord:
   id: ""
