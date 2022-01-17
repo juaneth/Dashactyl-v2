@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const { MongoClient } = require('mongodb');
-const functions = require('./loadSettings');
+const functions = require('.');
 
 const settings = functions.loadSettings();
 const client = new MongoClient(settings.database.connection_uri);

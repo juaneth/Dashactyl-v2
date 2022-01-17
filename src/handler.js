@@ -1,7 +1,7 @@
-const functions = require('./functions/loadSettings');
+const functions = require('./functions');
 
 const settings = functions.loadSettings();
-const pages = functions.loadPages(settings.website.theme);
+const pages = functions.loadPages();
 
 module.exports = (request, reply) => {
     if (request.url === '/') { 

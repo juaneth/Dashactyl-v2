@@ -8,7 +8,7 @@ module.exports = async (request, reply) => {
         if (!account) return reply.redirect('/login?err=NOACCOUNT');
         if (data.password !== account.password) return reply.redirect('/login?err=INVALIDPASS');
         request.session.set('account', account);
-        return reply.redirect(200, '/dashboard');
+        return reply.redirect('/dashboard');
 
     } else if (request.url === '/auth/signup') {
         let account = await db.fetchAccount(data.email);
