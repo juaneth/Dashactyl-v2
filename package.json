@@ -13,6 +13,7 @@
     "fastify-cookie": "^5.5.0",
     "fastify-formbody": "^5.2.0",
     "mongodb": "^4.3.0",
+    "node-fetch": "^2.6.7",
     "pino-pretty": "^7.3.0",
     "point-of-view": "^5.0.0",
     "yaml": "^1.10.2"
