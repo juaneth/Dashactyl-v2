@@ -1,4 +1,3 @@
-// const session = require('express-session');
 const functions = require('./functions/loadSettings');
 
 const settings = functions.loadSettings();
@@ -9,7 +8,7 @@ module.exports = (request, reply) => {
         return reply.view('home.ejs'); 
     } else if (request.url === '/logout') {
         request.destroySession();
-        return reply.redirect(200, '/');
+        return reply.redirect('/');
     }
 
     const path = request.url.slice(1).split('?')[0];
