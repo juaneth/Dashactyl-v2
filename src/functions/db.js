@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
 const { MongoClient } = require('mongodb');
 const functions = require('.');
+const panel = require('./panel');
 
 const settings = functions.loadSettings();
 const client = new MongoClient(settings.database.connection_uri);
@@ -88,33 +88,14 @@ async function createAccount(data) {
         Math.random().toString(36).substring(2, 15);
 
     let panelData;
-    let res = await fetch(
-        `${settings.pterodactyl.domain}/api/application/users?filter[email]=${data.email}`, {
-            method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${settings.pterodactyl.key}`
-            }
-        }
-    );
+    let res = await panel.fetchAccount(data.email);
 
     if (res.ok) {
         panelData = (await res.json()).data[0];
     }
 
     if (!panelData) {
-        res = await fetch(
-            `${settings.pterodactyl.domain}/api/application/users`, {
-                method: 'POST',
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${settings.pterodactyl.key}`
-                },
-                body: JSON.stringify({ ...data, password })
-            }
-        );
+        res = await panel.createAccount({ ...data, password });
         if (res.ok) {
             panelData = (await res.json()).attributes;
         } else {
