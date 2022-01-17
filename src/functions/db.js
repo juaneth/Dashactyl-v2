@@ -83,7 +83,7 @@ async function fetchAccount(email) {
 }
 
 async function createAccount(data) {
-    const password =
+    data.password ||=
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 
@@ -95,7 +95,7 @@ async function createAccount(data) {
     }
 
     if (!panelData) {
-        res = await panel.createAccount({ ...data, password });
+        res = await panel.createAccount(data);
         if (res.ok) {
             panelData = (await res.json()).attributes;
         } else {
@@ -105,7 +105,6 @@ async function createAccount(data) {
 
     const userData = {
         ...data,
-        password,
         coins: 0,
         package: 'default',
         resources:{
@@ -129,7 +128,7 @@ async function deleteAccount(email) {
 }
 
 async function checkBlacklisted(email) {
-    const data = await db.collection('blacklisted').findOne({ email });
+    const data = await db.collection('blacklist').findOne({ email });
     return !!data;
 }
 
