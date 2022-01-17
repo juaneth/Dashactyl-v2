@@ -7,6 +7,7 @@ module.exports = async (request, reply) => {
         const account = await db.fetchAccount(data.email);
         if (!account) return reply.redirect('/login?err=NOACCOUNT');
         if (data.password !== account.password) return reply.redirect('/login?err=INVALIDPASS');
+        request.session.set('account', account);
         return reply.redirect(200, '/dashboard');
 
     } else if (request.url === '/auth/signup') {
@@ -14,6 +15,7 @@ module.exports = async (request, reply) => {
         if (account) return reply.redirect('/login?err=ACCEXISTS');
         account = await db.createAccount(data);
         if (!account) return reply.view('err500.ejs');
+        request.session.set('account', account);
         return reply.redirect('/dashboard');
 
     } else {
