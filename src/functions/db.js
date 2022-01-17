@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const { MongoClient } = require('mongodb');
 const functions = require('./loadSettings');
 
