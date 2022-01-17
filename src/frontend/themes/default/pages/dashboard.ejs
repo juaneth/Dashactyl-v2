@@ -1,1 +1,35 @@
-<h1>Dashboard | Dashactyl</h1>
+<html>
+    <title>Dashboard | Dashactyl</title>
+    <section>
+        <tr>
+            <th>Server Name</th>
+            <th>CPU</th>
+            <th>Memory</th>
+            <th>Storage</th>
+            <th>Renew Time</th>
+            <th>Manage</th>
+        </tr>
+        <% if (data.servers.length) { %>
+            <% for (let server of data.servers) { %>
+                <% server = server.attributes %>
+                <tr>
+                    <td><%= server.name.length > 15 ? server.name.slice(0, 12) +'...' : server.name %></td>
+                    <td><%= server.limits.cpu %></td>
+                    <td><%= server.limits.memory %>MB</td>
+                    <td><%= server.limits.disk %>MB</td>
+                    <td><%# TODO: implement renewal timers %>0</td>
+                    <td><a href=<%= settings.pterodactyl.domain +'/server/'+ server.identifier %>>Manage</td>
+                </tr>
+            <% } %>
+        <% } else { %>
+            <tr>
+                <td>You have no servers. <a href="/servers/new">Click here</a> to create one.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        <% } %>
+    </section>
+</html>

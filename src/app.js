@@ -3,17 +3,19 @@ require('./functions/db');
 const fastify = require('fastify');
 const session = require('@fastify/session');
 const MongoStore = require('connect-mongodb-session')(session);
-const { loadSettings } = require('./functions/loadSettings');
+const { loadSettings } = require('./functions');
 const { join } = require('path');
 
 const settings = loadSettings();
 const app = fastify({
-    logger:{
-        prettyPrint:{
-            translateTime: 'HH:MM:ss Z',
-            ignore: 'pid,hostname'
+    logger: settings.website.logger
+        ? {
+            prettyPrint:{
+                translateTime: 'HH:MM:ss Z',
+                ignore: 'pid,hostname'
+            }
         }
-    }
+        : false
 });
 
 app.register(require('fastify-cookie'), {

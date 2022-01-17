@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
-const functions = require('./loadSettings');
+const functions = require('.');
+const panel = require('./panel');
 
 const settings = functions.loadSettings();
 const client = new MongoClient(settings.database.connection_uri);
@@ -82,38 +83,19 @@ async function fetchAccount(email) {
 }
 
 async function createAccount(data) {
-    const password =
+    data.password ||=
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 
     let panelData;
-    let res = await fetch(
-        `${settings.pterodactyl.domain}/api/application/users?filter[email]=${data.email}`, {
-            method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${settings.pterodactyl.key}`
-            }
-        }
-    );
+    let res = await panel.fetchAccount(data.email);
 
     if (res.ok) {
         panelData = (await res.json()).data[0];
     }
 
     if (!panelData) {
-        res = await fetch(
-            `${settings.pterodactyl.domain}/api/application/users`, {
-                method: 'POST',
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${settings.pterodactyl.key}`
-                },
-                body: JSON.stringify({ ...data, password })
-            }
-        );
+        res = await panel.createAccount(data);
         if (res.ok) {
             panelData = (await res.json()).attributes;
         } else {
@@ -123,7 +105,6 @@ async function createAccount(data) {
 
     const userData = {
         ...data,
-        password,
         coins: 0,
         package: 'default',
         resources:{
@@ -136,7 +117,11 @@ async function createAccount(data) {
     }
 
     await db.collection('users').insertOne(userData);
-    return userData;
+    return Object.assign(userData, {
+        root_admin: panelData.root_admin,
+        servers: panelData.relationships.servers.data,
+        is_new: true
+    });
 }
 
 async function deleteAccount(email) {
@@ -144,7 +129,7 @@ async function deleteAccount(email) {
 }
 
 async function checkBlacklisted(email) {
-    const data = await db.collection('blacklisted').findOne({ email });
+    const data = await db.collection('blacklist').findOne({ email });
     return !!data;
 }
 
