@@ -119,7 +119,8 @@ async function createAccount(data) {
     await db.collection('users').insertOne(userData);
     return Object.assign(userData, {
         root_admin: panelData.root_admin,
-        servers: panelData.relationships.servers.data
+        servers: panelData.relationships.servers.data,
+        is_new: true
     });
 }
 
