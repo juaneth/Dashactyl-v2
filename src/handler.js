@@ -1,7 +1,6 @@
-const functions = require('./functions');
+const { loadPages } = require('./functions');
 
-const settings = functions.loadSettings();
-const pages = functions.loadPages();
+const pages = loadPages();
 
 module.exports = (request, reply) => {
     if (request.url === '/') { 
@@ -22,5 +21,5 @@ module.exports = (request, reply) => {
         }
     }
 
-    return reply.view(page.file);
+    return reply.view(page.file, { data: account });
 }
