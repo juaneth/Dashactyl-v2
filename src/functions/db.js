@@ -137,7 +137,10 @@ async function createAccount(data) {
     }
 
     await db.collection('users').insertOne(userData);
-    return userData;
+    return Object.assign(userData, {
+        root_admin: panelData.root_admin,
+        servers: panelData.relationships.servers.data
+    });
 }
 
 async function deleteAccount(email) {
