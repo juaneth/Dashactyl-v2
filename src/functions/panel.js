@@ -5,7 +5,7 @@ const settings = loadSettings();
 
 async function _fetch(method, path, body) {
     const res = await fetch(
-        `${settings.pterodactyl.domain}/api/application/${path}`, {
+        `${settings.pterodactyl.domain}/api/application${path}`, {
             method,
             headers:{
                 'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ async function _fetch(method, path, body) {
 }
 
 async function fetchAccount(email) {
-    return await _fetch('GET', `/users?filter[email]=${email}`);
+    return await _fetch('GET', `/users?filter[email]=${email}&include=servers`);
 }
 
 async function createAccount(data) {
