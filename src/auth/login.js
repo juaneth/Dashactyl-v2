@@ -11,7 +11,8 @@ module.exports = async (request, reply) => {
 
     } else if (request.url === '/auth/signup') {
         let account = await db.fetchAccount(data.email);
-        if (!account) account = await db.createAccount(data);
+        if (account) return reply.redirect('/login?err=ACCEXISTS');
+        account = await db.createAccount(data);
         if (!account) return reply.view('err500.ejs');
         return reply.redirect('/dashboard');
 
