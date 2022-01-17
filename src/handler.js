@@ -1,4 +1,4 @@
-const { loadPages } = require('./functions');
+const { loadSettings, loadPages } = require('./functions');
 
 const pages = loadPages();
 
@@ -21,5 +21,5 @@ module.exports = (request, reply) => {
         }
     }
 
-    return reply.view(page.file, { data: account });
+    return reply.view(page.file, { data: account, settings: loadSettings() });
 }
