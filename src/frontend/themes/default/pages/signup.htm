@@ -7,8 +7,9 @@
     <input type="email" id="email" name="email"><br>
     <label for="password">Password</label><br>
     <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value="Sign Up">
+    <input type="submit" value="Sign Up"><br><br>
 </form>
+<button onclick="window.location.href = '/auth/discord'">Sign up with Discord</button>
 
 <script>
     function validate() {
@@ -17,10 +18,10 @@
             missing = 'username ';
         } else {
             const username = document.forms['authLogin']['username'].value;
-            if (/[^a-zA-Z0-9!\$\*\_\+\-]/g.test(username)) {
+            if (/[^a-zA-Z0-9!\$\#\*\_\+\-]/g.test(username)) {
                 event.preventDefault();
                 // temp alert
-                alert('Username can only have letters, numbers and these characters:\n! $ * _ + -');
+                alert('Username can only have letters, numbers and these characters:\n! $ # * _ + -');
                 return;
             }
         }
