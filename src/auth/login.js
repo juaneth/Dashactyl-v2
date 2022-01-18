@@ -26,7 +26,10 @@ module.exports = async (request, reply) => {
         if (account) return reply.redirect('/login?err=ACCEXISTS');
 
         account = await db.createAccount(data);
-        if (!account) return reply.view('err500.ejs');
+        if (!account) return reply.view('err500.ejs', {
+            error: 'Could not create account',
+            settings: loadSettings()
+        });
 
         request.session.set('account', account);
         return reply.redirect('/dashboard');
@@ -45,7 +48,8 @@ module.exports = async (request, reply) => {
             if (request.query.error === 'access_denied') return reply.redirect('/login?err=ACCESSDENIED');
         }
 
-        const { discord } = loadSettings();
+        const settings = loadSettings();
+        const { discord } = settings;
         let res = await fetch(
             'https://discord.com/api/oauth2/token', {
                 method: 'POST',
@@ -101,13 +105,16 @@ module.exports = async (request, reply) => {
                 username: userData.username + userData.discriminator,
                 email: userData.email
             });
-            if (!account) return reply.view('err500.ejs');
+            if (!account) return reply.view('err500.ejs', {
+                error: 'Could not create account.',
+                settings
+            });
             request.session.set('account', account);
         }
 
         return reply.redirect('/dashboard');
 
     } else {
-        return reply.view('err404.ejs');
+        return reply.view('err404.ejs', { error: 'Unknown authentication type.' });
     }
 }
