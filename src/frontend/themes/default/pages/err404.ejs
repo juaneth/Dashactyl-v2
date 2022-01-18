@@ -1,2 +1,5 @@
 <h1>404 | Not Found</h1>
-<button onclick="window.location.href = '/'">Go Home</button>
+<% if (error) { %>
+    <p><%= error %></p>
+<% } %>
+<button onclick="window.location.href = '/dashboard'">Go Back</button>
