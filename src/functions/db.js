@@ -87,6 +87,8 @@ async function createAccount(data) {
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 
+    data.avatar ||= 'https://cdn.discordapp.com/embed/avatars/1.png';
+
     let panelData;
     let res = await panel.fetchAccount(data.email);
 
