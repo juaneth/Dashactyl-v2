@@ -14,7 +14,7 @@ module.exports = (request, reply) => {
 
     const path = request.url.slice(1).split('?')[0];
     const page = pages[path];
-    if (!page) return reply.view('err404.ejs', { error: 'Page not found.' });
+    if (!page) return reply.view('err404.ejs');
 
     if (page.type) {
         if (!account) return reply.redirect('/login');
@@ -25,5 +25,10 @@ module.exports = (request, reply) => {
         }
     }
 
-    return reply.view(page.file, { data: account, settings: loadSettings() });
+    return reply.view(page.file, {
+        data: account,
+        settings: loadSettings(),
+        query: request.query,
+        params: request.params
+    });
 }
