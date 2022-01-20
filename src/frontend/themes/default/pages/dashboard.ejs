@@ -1,35 +1,44 @@
-<html>
-    <title>Dashboard | Dashactyl</title>
-    <section>
-        <tr>
-            <th>Server Name</th>
-            <th>CPU</th>
-            <th>Memory</th>
-            <th>Storage</th>
-            <th>Renew Time</th>
-            <th>Manage</th>
-        </tr>
-        <% if (data.servers.length) { %>
-            <% for (let server of data.servers) { %>
-                <% server = server.attributes %>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="Dashboard Page • Dashactyl">
+        <title>Dashboard | Dashactyl</title>
+    </head>
+    <body>
+        <%- include('./components/navbar') %>
+        <section>
+            <tr>
+                <th>Server Name</th>
+                <th>CPU</th>
+                <th>Memory</th>
+                <th>Storage</th>
+                <th>Renew Time</th>
+                <th>Manage</th>
+            </tr>
+            <% if (data.servers.length) { %>
+                <% for (let server of data.servers) { %>
+                    <% server = server.attributes %>
+                    <tr>
+                        <td><%= server.name.length > 15 ? server.name.slice(0, 12) +'...' : server.name %></td>
+                        <td><%= server.limits.cpu %></td>
+                        <td><%= server.limits.memory %>MB</td>
+                        <td><%= server.limits.disk %>MB</td>
+                        <td><%# TODO: implement renewal timers %>0</td>
+                        <td><a href=<%= settings.pterodactyl.domain +'/server/'+ server.identifier %>>Manage</td>
+                    </tr>
+                <% } %>
+            <% } else { %>
                 <tr>
-                    <td><%= server.name.length > 15 ? server.name.slice(0, 12) +'...' : server.name %></td>
-                    <td><%= server.limits.cpu %></td>
-                    <td><%= server.limits.memory %>MB</td>
-                    <td><%= server.limits.disk %>MB</td>
-                    <td><%# TODO: implement renewal timers %>0</td>
-                    <td><a href=<%= settings.pterodactyl.domain +'/server/'+ server.identifier %>>Manage</td>
+                    <td>You have no servers. <a href="/servers/new">Click here</a> to create one.</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             <% } %>
-        <% } else { %>
-            <tr>
-                <td>You have no servers. <a href="/servers/new">Click here</a> to create one.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        <% } %>
-    </section>
+        </section>
+    </body>
 </html>
