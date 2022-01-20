@@ -1,0 +1,18 @@
+<%
+    const errors = {
+        NOACCOUNT: 'An account with those credentials could not be found.',
+        INVALIDPASS: 'An invalid password was provided.',
+        ACCEXISTS: 'An account with these credentials already exists.',
+        ACCESSDENIED: 'Authentication access was denied by the server.',
+        INVALIDCODE: 'An invalid authentication code was received. '+
+            'Contact administrators if this continues.',
+        INVALIDSCOPE: 'An invalid authentication scope was used for '+
+            'authorization. Please contact administrators to resolve this.',
+        NOTVERIFIED: 'Cannot authenticate through Discord with an unverified account.'
+    }
+%>
+<% if (query?.err && errors[query.err]) { %>
+    <div>
+        <span style="color: red;"><%= errors[query.err] %></span>
+    </div>
+<% } %>

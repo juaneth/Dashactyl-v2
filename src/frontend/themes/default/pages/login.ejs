@@ -8,6 +8,7 @@
     </head>
     <body>
         <%- include('./components/navbar') %>
+        <%- include('./components/banner') %>
         <form name="authLogin" action="/auth/login" method="POST" onsubmit="return validate()">
             <label for="email">Email</label><br>
             <input type="email" id="email" name="email"><br>
