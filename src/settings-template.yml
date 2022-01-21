@@ -4,6 +4,7 @@ website:
   secure: false
   theme: default
   logger: false
+  arcio_id: ""
 
 discord:
   id: ""
