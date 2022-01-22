@@ -199,6 +199,12 @@ async function createCoupon(data) {
     });
 }
 
+async function updateCoupon(code, data) {
+    const coupon = await fetchCoupon(code);
+    for (const key of Object.keys(coupon)) if (key in data) coupon[key] = data[key];
+    return await db.collection('coupons').updateOne({ code }, { $set: coupon });
+}
+
 async function deleteCoupon(code) {
     return await db.collection('coupons').deleteOne({ code });
 }
@@ -216,5 +222,6 @@ module.exports = {
     getAllCoupons,
     fetchCoupon,
     createCoupon,
+    updateCoupon,
     deleteCoupon
 }
