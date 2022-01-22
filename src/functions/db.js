@@ -179,7 +179,28 @@ async function addPackage(name, memory, disk, cpu, servers, isDefault) {
 }
 
 async function deletePackage(name) {
-    await db.collection("packages").deleteOne({ name });
+    return await db.collection("packages").deleteOne({ name });
+}
+
+async function getAllCoupons() {
+    return await db.collection('coupons').find({}).toArray();
+}
+
+async function fetchCoupon(code) {
+    return await db.collection('coupons').findOne({ code });
+}
+
+async function createCoupon(data) {
+    const exists = await fetchCoupon(data.code);
+    if (exists) return;
+    return await db.collection('coupons').insertOne({
+        ...data,
+        created_at: Date.now()
+    });
+}
+
+async function deleteCoupon(code) {
+    return await db.collection('coupons').deleteOne({ code });
 }
 
 module.exports = {
@@ -191,5 +212,9 @@ module.exports = {
     checkBlacklisted,
     getPackages,
     addPackage,
-    deletePackage
+    deletePackage,
+    getAllCoupons,
+    fetchCoupon,
+    createCoupon,
+    deleteCoupon
 }
