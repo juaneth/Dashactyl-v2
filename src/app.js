@@ -48,6 +48,10 @@ app.register(require('point-of-view'), {
 app.register(require('fastify-formbody'));
 
 app.all('/auth/*', require('./auth/login'));
+app.register(
+    (api, options, done) => require('./api')(api, options, done),
+    { prefix: '/api' }
+);
 app.all('*', require('./handler'));
 
 app.listen(settings.website.port, (err, address) => {
