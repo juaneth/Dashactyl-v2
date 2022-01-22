@@ -4,9 +4,11 @@ const settings = loadSettings();
 
 module.exports = (api, _, done) => {
     api.addHook('preHandler', (request, reply, done) => {
-        const auth = request.headers['authorization']?.slice(7);
+        const auth = request.headers['authorization'];
 
         if (!auth) {
+            // if (request.host === request.headers['host']) return done();
+
             reply.send({
                 status: 'error',
                 message: 'missing authorization'
