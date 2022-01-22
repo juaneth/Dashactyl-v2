@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <meta name="description" content="Home Page • Dashactyl">
-        <title>Home | Dashactyl</title>
+        <meta name="description" content="AFK Page • Dashactyl">
+        <title>AFK | Dashactyl</title>
         <% if (settings.arcio_id) { %>
             <script async src="<%= settings.arcio_id %>"></script>
         <% } %>
@@ -12,7 +12,7 @@
     <body>
         <p>Every minute you will earn <%= settings.afk.coins_per_minute %> coins</p><br>
         <p>Coins Earned: <span id="total-coins">0</span></p><br>
-        <p>Time left until next refresh: <span id="timer">0</span> seconds</p>
+        <p>Time left until next refresh: <span id="timer">60</span> seconds</p>
         <!-- Developers can add their own custom AFK stuff here like ads -->
         <script>
             setInterval(() => {
@@ -21,17 +21,17 @@
                 document.getElementById('timer').innerHTML = time - 1;
             }, 1_000);
 
-            // setInterval(() => {
-            //     let coins = (await fetch(`/api/users/${data.id}`)).coins;
-            //     coins += Number("<%# settings.afk.coins_per_minute %>");
-            //     await fetch(`/api/users/${data.id}`, {
-            //         method: 'PUT',
-            //         body: JSON.stringify({ coins })
-            //     });
-            //
-            //     let current = Number(document.getElementById('total-coins').innerHTML);
-            //     document.getElementById('total-coins').innerHTML = current + <%# settings.afk.coins_per_minute %>;
-            // }, 60_000);
+            setInterval(async () => {
+                const res = await fetch('/api/users/<%= data.panel_id %>').then(d => d.json());
+                const coins = res.data.coins + Number('<%= settings.afk.coins_per_minute %>');
+                await fetch('/api/users/<%= data.panel_id %>/coins', {
+                    method: 'PUT',
+                    body: JSON.stringify({ coins })
+                });
+
+                let current = Number(document.getElementById('total-coins').innerHTML);
+                document.getElementById('total-coins').innerHTML = current + perMin;
+            }, 60_000);
         </script>
     </body>
 </html>
