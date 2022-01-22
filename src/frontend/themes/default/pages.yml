@@ -20,3 +20,7 @@ dashboard:
 earn/afk:
   file: afk.ejs
   type: 1
+
+earn/redeem:
+  file: redeem.ejs
+  type: 1
