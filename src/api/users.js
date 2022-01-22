@@ -1,12 +1,12 @@
 const db = require('../functions/db');
 
-module.exports = async (api, options, done) => {
-    api.get('/users', async (_, reply) => {
+module.exports = async (api, done) => {
+    api.get('/', async (_, reply) => {
         const data = await db.getAllAccounts();
         return reply.send({ status: 'success', data });
     });
 
-    api.get('/users/:id', async (request, reply) => {
+    api.get('/:id', async (request, reply) => {
         if (!request.params.id?.length) return reply.send({
             status: 'error',
             message: 'missing parameter id'
@@ -27,7 +27,7 @@ module.exports = async (api, options, done) => {
         return reply.send({ status: 'success', data });
     });
 
-    api.patch('/users/:id', async (request, reply) => {
+    api.patch('/:id', async (request, reply) => {
         if (!request.params.id?.length) return reply.send({
             status: 'error',
             message: 'missing parameter id'
@@ -86,7 +86,7 @@ module.exports = async (api, options, done) => {
         return reply.send({ status: 'success', data });
     });
 
-    api.put('/users/:id/coins', async (request, reply) => {
+    api.put('/:id/coins', async (request, reply) => {
         if (!request.params.id?.length) return reply.send({
             status: 'error',
             message: 'missing parameter id'
@@ -121,7 +121,7 @@ module.exports = async (api, options, done) => {
         return reply.send({ status: 'success', data });
     });
 
-    api.put('/users/:id/package', async (request, reply) => {
+    api.put('/:id/package', async (request, reply) => {
         if (!request.params.id?.length) return reply.send({
             status: 'error',
             message: 'missing parameter id'
@@ -156,7 +156,7 @@ module.exports = async (api, options, done) => {
         return reply.send({ status: 'success', data });
     });
 
-    api.patch('/users/:id/resources', async (request, reply) => {
+    api.patch('/:id/resources', async (request, reply) => {
         if (!request.params.id?.length) return reply.send({
             status: 'error',
             message: 'missing parameter id'
@@ -195,4 +195,6 @@ module.exports = async (api, options, done) => {
         await db.updateAccount(id, data);
         return reply.send({ status: 'success', data: data.resources });
     });
+
+    done();
 }
