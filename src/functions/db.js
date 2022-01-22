@@ -78,8 +78,9 @@ async function getAllAccounts() {
     return await db.collection("users").find({}).toArray();
 }
 
-async function fetchAccount(email) {
-    return await db.collection('users').findOne({ email });
+async function fetchAccount(emailOrId) {
+    if (isNaN(emailOrId)) return await db.collection('users').findOne({ email: emailOrId });
+    return await db.collection('users').findOne({ panel_id: emailOrId });
 }
 
 async function createAccount(data) {
@@ -124,6 +125,16 @@ async function createAccount(data) {
         servers: panelData.relationships.servers.data,
         is_new: true
     });
+}
+
+async function updateAccount(idOrEmail, data) {
+    const user = await fetchAccount(idOrEmail);
+    const type = isNaN(idOrEmail) ? 'email' : 'panel_id';
+    for (const key of Object.keys(user)) if (key in data) user[key] = data[key];
+    return await db.collection('users').updateOne(
+        { [type]: idOrEmail },
+        { $set: user }
+    );
 }
 
 async function deleteAccount(email) {
@@ -175,6 +186,7 @@ module.exports = {
     getAllAccounts,
     fetchAccount,
     createAccount,
+    updateAccount,
     deleteAccount,
     checkBlacklisted,
     getPackages,
