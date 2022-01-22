@@ -25,7 +25,7 @@ database:
 
 api:
   keys:
-    - d3f4Lt # whitelisted Dashactyl API keys
+    - d3f4uLt # whitelisted Dashactyl API keys
   
   users: true
   coins: true
