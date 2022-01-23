@@ -36,5 +36,22 @@ module.exports = (api, _, done) => {
         { prefix: '/coupons' }
     );
 
+    api.get('/', (_, reply, done) => {
+        reply.send({
+            status: 'success',
+            version: '2.0.0-alpha'
+        });
+        return done();
+    });
+
+    api.all('*', (_, reply, done) => {
+        if (reply.sent) return;
+        reply.status(404).send({
+            status: 'error',
+            message: 'endpoint not found'
+        });
+        return done();
+    });
+
     done();
 }
