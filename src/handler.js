@@ -1,10 +1,17 @@
+const db = require('./functions/db');
 const { loadSettings, loadPages } = require('./functions');
 
 const settings = loadSettings();
 const pages = loadPages();
 
-module.exports = (request, reply) => {
+module.exports = async (request, reply) => {
     const account = request.session.get('account');
+
+    if (
+        settings.referral.enabled &&
+        settings.referral.limit &&
+        request.query.aff
+    ) await checkReferral(request);
 
     if (request.url === '/') {
         return reply.view('home.ejs', { data: account, settings });
@@ -31,4 +38,15 @@ module.exports = (request, reply) => {
         query: request.query,
         params: request.params
     });
+}
+
+async function checkReferral(request) {
+    const user = await db.fetchReferralAccount(request.query.aff);
+    if (!user) return Promise.resolve();
+
+    user.coins += settings.referral.limit;
+    if (user.coins > 999_999) user.coins = 999_999;
+
+    await db.updateAccount(user.email, user);
+    return Promise.resolve();
 }
