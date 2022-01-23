@@ -14,7 +14,8 @@
         <input type="submit" value="Redeem" onclick="return tryRedeem()">
         <script>
             async function tryRedeem() {
-                const code = document.getElementById('coupon-code').innerHTML;
+                const code = document.getElementById('coupon-code').value;
+                if (!code.length) return alert('No code provided!');
                 const data = await fetch(`/api/coupons/${code}/redeem`, {
                     method: 'POST',
                     body: JSON.stringify({
