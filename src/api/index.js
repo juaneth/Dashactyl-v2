@@ -7,8 +7,7 @@ module.exports = (api, _, done) => {
         const auth = request.headers['authorization'];
 
         if (!auth) {
-            // if (request.host === request.headers['host']) return done();
-
+            if (request.session.get('account')) return done();
             reply.send({
                 status: 'error',
                 message: 'missing authorization'
