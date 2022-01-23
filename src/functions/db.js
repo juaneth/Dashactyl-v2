@@ -108,6 +108,7 @@ async function createAccount(data) {
 
     const userData = {
         ...data,
+        panel_id: panelData.id,
         coins: 0,
         package: 'default',
         resources:{
