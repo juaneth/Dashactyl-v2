@@ -15,7 +15,7 @@ module.exports = (api, _, done) => {
             return done();
         }
 
-        if (!settings.api.keys.includes(auth)) {
+        if (!settings.api.keys.includes(auth.slice(7))) {
             reply.status(401).send({
                 status: 'error',
                 message: 'invalid authorization'
