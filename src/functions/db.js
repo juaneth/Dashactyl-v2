@@ -78,14 +78,17 @@ async function getAllAccounts() {
     return await db.collection("users").find({}).toArray();
 }
 
-async function fetchAccount(email) {
-    return await db.collection('users').findOne({ email });
+async function fetchAccount(emailOrId) {
+    if (isNaN(emailOrId)) return await db.collection('users').findOne({ email: emailOrId });
+    return await db.collection('users').findOne({ panel_id: emailOrId });
 }
 
 async function createAccount(data) {
     data.password ||=
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
+
+    data.avatar ||= 'https://cdn.discordapp.com/embed/avatars/1.png';
 
     let panelData;
     let res = await panel.fetchAccount(data.email);
@@ -122,6 +125,16 @@ async function createAccount(data) {
         servers: panelData.relationships.servers.data,
         is_new: true
     });
+}
+
+async function updateAccount(idOrEmail, data) {
+    const user = await fetchAccount(idOrEmail);
+    const type = isNaN(idOrEmail) ? 'email' : 'panel_id';
+    for (const key of Object.keys(user)) if (key in data) user[key] = data[key];
+    return await db.collection('users').updateOne(
+        { [type]: idOrEmail },
+        { $set: user }
+    );
 }
 
 async function deleteAccount(email) {
@@ -166,16 +179,49 @@ async function addPackage(name, memory, disk, cpu, servers, isDefault) {
 }
 
 async function deletePackage(name) {
-    await db.collection("packages").deleteOne({ name });
+    return await db.collection("packages").deleteOne({ name });
+}
+
+async function getAllCoupons() {
+    return await db.collection('coupons').find({}).toArray();
+}
+
+async function fetchCoupon(code) {
+    return await db.collection('coupons').findOne({ code });
+}
+
+async function createCoupon(data) {
+    const exists = await fetchCoupon(data.code);
+    if (exists) return;
+    return await db.collection('coupons').insertOne({
+        ...data,
+        created_at: Date.now()
+    });
+}
+
+async function updateCoupon(code, data) {
+    const coupon = await fetchCoupon(code);
+    for (const key of Object.keys(coupon)) if (key in data) coupon[key] = data[key];
+    return await db.collection('coupons').updateOne({ code }, { $set: coupon });
+}
+
+async function deleteCoupon(code) {
+    return await db.collection('coupons').deleteOne({ code });
 }
 
 module.exports = {
     getAllAccounts,
     fetchAccount,
     createAccount,
+    updateAccount,
     deleteAccount,
     checkBlacklisted,
     getPackages,
     addPackage,
-    deletePackage
+    deletePackage,
+    getAllCoupons,
+    fetchCoupon,
+    createCoupon,
+    updateCoupon,
+    deleteCoupon
 }

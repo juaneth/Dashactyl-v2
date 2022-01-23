@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="AFK Page • Dashactyl">
+        <title>Redeem | Dashactyl</title>
+    </head>
+    <body>
+        <%- include('./components/navbar') %>
+        <p>Enter your coupon code to earn resources.</p>
+        <label for="coupon-code">Enter Code</label><br>
+        <input type="text" id="coupon-code" name="coupon" required><br>
+        <input type="submit" value="Redeem" onclick="return tryRedeem()">
+        <script>
+            async function tryRedeem() {
+                const code = document.getElementById('coupon-code').value;
+                if (!code.length) return alert('No code provided!');
+                const data = await fetch(`/api/coupons/${code}/redeem`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        user: Number('<%= data.panel_id %>')
+                    })
+                }).then(d => d.json());
+                if (data.status !== 'success') {
+                    // another temp alert thing
+                    return alert(data.message);
+                }
+                const res = ['Coupon successfully redeemed! You have earned:'];
+                if (data.coins) res.push(`• ${data.coins} coins`);
+                if (data.ram) res.push(`• ${data.ram}MB RAM`);
+                if (data.disk) res.push(`• ${data.disk}MB Disk`);
+                if (data.cpu) res.push(`• ${data.cpu} CPU`);
+                if (data.servers) res.push(`• ${data.servers} Server(s)`);
+                return alert(res.join('\n'));
+            }
+        </script>
+    </body>
+</html>

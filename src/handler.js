@@ -1,10 +1,13 @@
 const { loadSettings, loadPages } = require('./functions');
 
+const settings = loadSettings();
 const pages = loadPages();
 
 module.exports = (request, reply) => {
-    if (request.url === '/') { 
-        return reply.view('home.ejs'); 
+    const account = request.session.get('account');
+
+    if (request.url === '/') {
+        return reply.view('home.ejs', { data: account, settings });
     } else if (request.url === '/logout') {
         return request.destroySession(() => reply.redirect('/'));
     }
@@ -13,13 +16,19 @@ module.exports = (request, reply) => {
     const page = pages[path];
     if (!page) return reply.view('err404.ejs');
 
-    const account = request.session.get('account');
     if (page.type) {
         if (!account) return reply.redirect('/login');
         if (page.type === 2) {
-            if (!account.root_admin) return reply.view('err403.ejs');
+            if (!account.root_admin) return reply.view('err403.ejs', {
+                error: 'This is for panel administrators only.'
+            });
         }
     }
 
-    return reply.view(page.file, { data: account, settings: loadSettings() });
+    return reply.view(page.file, {
+        data: account,
+        settings: loadSettings(),
+        query: request.query,
+        params: request.params
+    });
 }

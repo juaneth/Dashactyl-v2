@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="Internal Error • Dashactyl">
+        <title>Internal Error | Dashactyl</title>
+    </head>
+    <body>
+        <h1>500 | Internal Error</h1>
+        <p>An unknown error occurred with Dashactyl. Please contact an administrator to resolve this.</p>
+        <% if (error) { %>
+            <p><%= error %></p>
+        <% } %>
+        <% if (settings.discord.invite) { %>
+            <button onclick="window.location.href = settings.discord.invite">Contact Administrators</button><br>
+        <% } %>
+        <button onclick="window.location.href = '/dashboard'">Go Back</button>
+    </body>
+</html>
