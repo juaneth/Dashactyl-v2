@@ -8,7 +8,7 @@ module.exports = (api, _, done) => {
 
         if (!auth) {
             if (request.session.get('account')) return done();
-            reply.send({
+            reply.status(401).send({
                 status: 'error',
                 message: 'missing authorization'
             });
@@ -16,7 +16,7 @@ module.exports = (api, _, done) => {
         }
 
         if (!settings.api.keys.includes(auth)) {
-            reply.send({
+            reply.status(401).send({
                 status: 'error',
                 message: 'invalid authorization'
             });
