@@ -41,10 +41,8 @@ module.exports = async (api, done) => {
         data.cpu = validate(data.cpu, 999_999).toString();
         data.servers = validate(data.servers, 10);
 
-        data.uses = validate(data.uses, 10_000);
-        data.uses ||= null;
-        data.expires_at = validate(data.expires_at, 2.628E+09);
-        data.expires_at ||= null;
+        data.uses = validate(data.uses, 10_000) || null;
+        data.expires_at = validate(data.expires_at, 2.628E+09) || null;
 
         await db.createCoupon({
             ...data,
