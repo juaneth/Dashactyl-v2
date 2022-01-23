@@ -3,6 +3,7 @@ const db = require('../functions/db');
 module.exports = async (api, done) => {
     api.get('/', async (_, reply) => {
         const data = await db.getAllAccounts();
+        for (const u of data) delete u._id;
         return reply.send({ status: 'success', data });
     });
 
@@ -24,6 +25,7 @@ module.exports = async (api, done) => {
             message: 'user not found'
         });
 
+        delete data._id;
         return reply.send({ status: 'success', data });
     });
 
@@ -83,6 +85,7 @@ module.exports = async (api, done) => {
         }
 
         await db.updateAccount(id, body);
+        delete data._id;
         return reply.send({ status: 'success', data });
     });
 
@@ -118,6 +121,7 @@ module.exports = async (api, done) => {
         data.coins = coins;
 
         await db.updateAccount(id, data);
+        delete data._id;
         return reply.send({ status: 'success', data });
     });
 
@@ -153,6 +157,7 @@ module.exports = async (api, done) => {
 
         data.package = package;
         await db.updateAccount(id, data);
+        delete data._id;
         return reply.send({ status: 'success', data });
     });
 
@@ -192,7 +197,9 @@ module.exports = async (api, done) => {
 
         for (const [key, val] of Object.entries(body)) body[key] = String(val);
         data.resources = body;
+
         await db.updateAccount(id, data);
+        delete data._id;
         return reply.send({ status: 'success', data: data.resources });
     });
 
