@@ -83,6 +83,10 @@ async function fetchAccount(emailOrId) {
     return await db.collection('users').findOne({ panel_id: emailOrId });
 }
 
+async function fetchReferralAccount(refId) {
+    return await db.collection('users').findOne({ ref_id: refId });
+}
+
 async function createAccount(data) {
     data.password ||=
         Math.random().toString(36).substring(2, 15) +
@@ -109,6 +113,7 @@ async function createAccount(data) {
     const userData = {
         ...data,
         panel_id: panelData.id,
+        ref_id: null,
         coins: 0,
         package: 'default',
         resources:{
@@ -213,6 +218,7 @@ async function deleteCoupon(code) {
 module.exports = {
     getAllAccounts,
     fetchAccount,
+    fetchReferralAccount,
     createAccount,
     updateAccount,
     deleteAccount,
