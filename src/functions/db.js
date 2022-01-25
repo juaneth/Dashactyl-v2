@@ -97,13 +97,13 @@ async function createAccount(data) {
     let panelData;
     let res = await panel.fetchAccount(data.email);
 
-    if (res.ok) {
+    if (res) {
         panelData = (await res.json()).data[0];
     }
 
     if (!panelData) {
         res = await panel.createAccount(data);
-        if (res.ok) {
+        if (res) {
             panelData = (await res.json()).attributes;
         } else {
             return null;

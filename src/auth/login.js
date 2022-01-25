@@ -22,6 +22,7 @@ module.exports = async (request, reply) => {
         return reply.redirect('/dashboard');
 
     } else if (url === '/auth/signup') {
+        console.log(data)
         let account = await db.fetchAccount(data.email);
         if (account) return reply.redirect('/login?err=ACCEXISTS');
 
