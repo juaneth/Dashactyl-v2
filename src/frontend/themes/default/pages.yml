@@ -10,7 +10,7 @@ login:
   type: 0
 
 signup:
-  file: signup.htm
+  file: signup.ejs
   type: 0
 
 dashboard:
