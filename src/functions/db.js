@@ -97,9 +97,13 @@ async function createAccount(data) {
     let panelData;
     let res = await panel.fetchAccount(data.email);
 
+    console.log(res)
+
     if (res) {
-        panelData = (await res.json()).data[0];
+        panelData = (await res).data[0];
     }
+
+    console.log(panelData.attributes.relationships.servers)
 
     if (!panelData) {
         res = await panel.createAccount(data);
@@ -127,8 +131,8 @@ async function createAccount(data) {
 
     await db.collection('users').insertOne(userData);
     return Object.assign(userData, {
-        root_admin: panelData.root_admin,
-        servers: panelData.relationships.servers.data,
+        root_admin: panelData.attributes.root_admin,
+        servers: panelData.attributes.relationships.servers.data,
         is_new: true
     });
 }
