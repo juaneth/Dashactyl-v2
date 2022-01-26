@@ -129,11 +129,12 @@ async function createAccount(data) {
             servers: '0'
         },
         created_at: Date.now(),
-        root_admin: panelData.attributes.root_admin,
-
+        root_admin: panelData.attributes.root_admin
     }
 
     await db.collection('users').insertOne(userData);
+    console.log(panelData.attributes.relationships.servers)
+    console.log(panelData.attributes.relationships.servers.data)
     return Object.assign(userData, {
         servers: panelData.attributes.relationships.servers.data,
         is_new: true

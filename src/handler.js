@@ -38,9 +38,11 @@ module.exports = async (request, reply) => {
     }
     account = updated;
 
+    console.log(settings)
+
     return reply.view(page.file, {
         data: account,
-        settings: loadSettings(),
+        settings: settings,
         query: request.query,
         params: request.params
     });
