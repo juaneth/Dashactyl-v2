@@ -16,6 +16,7 @@ user:
     cpu: string-number
     servers: string-number
   created_at: number
+  root_admin: boolean
 
 package:
   name: string

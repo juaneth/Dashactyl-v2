@@ -32,13 +32,11 @@ module.exports = async (request, reply) => {
         }
     }
 
-    if (settings.website.updateaccount === true) {
-        const updated = await db.fetchAccount(account.email)
-        if (updated === null) {
-            if (page.type != 0) request.destroySession(() => reply.redirect('/'));
-        }
-        account = updated;
+    const updated = await db.fetchAccount(account.email)
+    if (updated === null) {
+        if (page.type != 0) request.destroySession(() => reply.redirect('/'));
     }
+    account = updated;
 
     return reply.view(page.file, {
         data: account,
