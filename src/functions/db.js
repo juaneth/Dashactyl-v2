@@ -114,12 +114,14 @@ async function createAccount(data) {
         }
     }
 
+    const defaultpackage = await this.getPackages("default")
+
     const userData = {
         ...data,
         panel_id: panelData.id,
         ref_id: null,
         coins: 0,
-        package: 'default',
+        package: defaultpackage,
         resources:{
             ram: '0',
             disk: '0',
