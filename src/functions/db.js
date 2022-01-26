@@ -130,12 +130,14 @@ async function createAccount(data) {
         },
         created_at: Date.now(),
         root_admin: panelData.attributes.root_admin,
-        servers: panelData.attributes.relationships.servers.data,
-        is_new: true
+
     }
 
     await db.collection('users').insertOne(userData);
-    return userData;
+    return Object.assign(userData, {
+        servers: panelData.attributes.relationships.servers.data,
+        is_new: true
+    });
 }
 
 async function updateAccount(idOrEmail, data) {
