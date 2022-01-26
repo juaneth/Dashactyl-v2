@@ -5,7 +5,7 @@ const settings = loadSettings();
 const pages = loadPages();
 
 module.exports = async (request, reply) => {
-    const account = request.session.get('account');
+    let account = request.session.get('account');
 
     if (
         settings.referral.enabled &&
@@ -30,6 +30,11 @@ module.exports = async (request, reply) => {
                 error: 'This is for panel administrators only.'
             });
         }
+    }
+
+    if (settings.website.updateaccount === true) {
+        const updated = await db.fetchAccount(account.email)
+        console.log(updated)
     }
 
     return reply.view(page.file, {

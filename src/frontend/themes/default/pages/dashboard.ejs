@@ -8,6 +8,11 @@
     </head>
     <body>
         <%- include('./components/navbar') %>
+        <a>Resources:</a>
+        <a>Ram: <%= data.resources.ram %>/null</a>
+        <a>Disk: <%= data.resources.disk %>/null</a>
+        <a>CPU: <%= data.resources.cpu %>/null</a>
+        <a>Servers: <%= data.resources.servers %>/null</a>
         <section>
             <tr>
                 <th>Server Name</th>

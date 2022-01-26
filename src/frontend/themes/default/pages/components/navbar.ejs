@@ -13,8 +13,12 @@
             <img src="<% data.avatar %>" alt="user_avatar">
         </button>
         <div id="dropdown-options">
-            <span><%= data.username %></span>
-            <span><%= data.coins %> Coins</span>
+            <span>
+                <%= data.username %>
+            </span>
+            <span>
+                <%= data.coins %> Coins
+            </span>
             <span>Package: <%= data.package %></span>
             <ul>
                 <li><a href="/account">Account</a></li>
@@ -22,12 +26,13 @@
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </div>
-    <% } %>
+        <% } %>
 </nav>
 <style>
     #dropdown-options {
         display: none;
     }
+
     #dropdown-button:hover #dropdown-options {
         display: block;
     }
