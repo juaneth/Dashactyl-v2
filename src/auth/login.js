@@ -30,15 +30,22 @@ module.exports = async (request, reply) => {
         return reply.redirect('/dashboard');
 
     } else if (url === '/auth/signup') {
-        console.log(data)
         let account = await db.fetchAccount(data.email);
         if (account) return reply.redirect('/login?err=ACCEXISTS');
 
-        account = await db.createAccount({
-            ...data,
-            // temp avatar
-            avatar: 'https://cdn.discordapp.com/embed/avatars/1.png'
-        });
+        try {
+            account = await db.createAccount({
+                ...data,
+                // temp avatar
+                avatar: 'https://cdn.discordapp.com/embed/avatars/1.png'
+            });
+        } catch (err) {
+            return reply.view('err505.ejs', {
+                error: err.message,
+                settings: loadSettings()
+            });
+        }
+
         if (!account) return reply.view('err500.ejs', {
             error: 'Could not create account',
             settings: loadSettings()
