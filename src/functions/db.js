@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+const { createHash } = require('crypto');
 const functions = require('.');
 const panel = require('./panel');
 
@@ -91,6 +92,11 @@ async function createAccount(data) {
     data.password ||=
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
+
+    data.password = createHash('sha256')
+        .update(data.password)
+        .digest()
+        .toString();
 
     data.avatar ||= 'https://cdn.discordapp.com/embed/avatars/1.png';
 

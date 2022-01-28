@@ -1,3 +1,4 @@
+const { createHash } = require('crypto');
 const fetch = require('node-fetch');
 const db = require('../functions/db');
 const panel = require('../functions/panel');
@@ -10,10 +11,17 @@ module.exports = async (request, reply) => {
     if (url === '/auth/login') {
         const account = await db.fetchAccount(data.email);
         if (!account) return reply.redirect('/login?err=NOACCOUNT');
-        if (data.password !== account.password) return reply.redirect('/login?err=INVALIDPASS');
+
+        const hashed = createHash('sha256')
+            .update(data.password)
+            .digest()
+            .toString();
+
+        if (hashed !== account.password) return reply.redirect('/login?err=INVALIDPASS');
 
         const panelData = (await panel.fetchAccount(data.email)).data[0].attributes;
         request.session.set('account', Object.assign(account, {
+            password: hashed,
             root_admin: panelData.root_admin,
             servers: panelData.relationships.servers.data,
             is_new: false
