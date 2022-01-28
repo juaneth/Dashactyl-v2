@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="Admin Page • Dashactyl">
+        <title>Admin | Dashactyl</title>
+    </head>
+    <body>
+        <%- include('../components/navbar') %>
+        <%# include sidebar html %>
+        <h1>Administrator Panel</h1>
+        <h3>Information</h3>
+        <tr>
+            <td>Version: <%= data.version %></td>
+            <td>Status: <%= data.status %></td>
+        </tr>
+    </body>
+</html>
