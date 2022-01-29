@@ -157,7 +157,7 @@ async function getPackages(name = null) {
 }
 
 async function addPackage(name, memory, disk, cpu, servers, isDefault) {
-    const packages = await getPackages();
+    const packages = await this.getPackages();
     if (packages.find(p => p.name === name)) return false;
 
     if (isDefault) {
