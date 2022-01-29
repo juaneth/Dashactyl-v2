@@ -52,6 +52,10 @@ app.register(
     (api, options, done) => require('./api')(api, options, done),
     { prefix: '/api' }
 );
+app.register(
+    (api, options, done) => require('./admin')(api, options, done),
+    { prefix: '/admin' }
+);
 app.all('*', require('./handler'));
 
 app.listen(settings.website.port, (err, address) => {

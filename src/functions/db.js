@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+const { createHash } = require('crypto');
 const functions = require('.');
 const panel = require('./panel');
 
@@ -92,51 +93,39 @@ async function createAccount(data) {
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 
+    data.password = createHash('sha256')
+        .update(data.password)
+        .digest()
+        .toString();
+
     data.avatar ||= 'https://cdn.discordapp.com/embed/avatars/1.png';
 
-    let panelData;
-    let res = await panel.fetchAccount(data.email);
-
-    console.log(res)
-
-    if (res) {
-        panelData = (await res).data[0];
-    }
-
-    console.log(panelData.attributes.relationships.servers)
-
+    let panelData = await panel.fetchAccount(data.email);
     if (!panelData) {
-        res = await panel.createAccount(data);
-        if (res) {
-            panelData = (await res.json()).attributes;
-        } else {
-            return null;
-        }
+        panelData = await panel.createAccount(data);
+        if (!panelData) throw new Error('Could not create panel account.');
     }
 
-    const defaultpackage = await this.getPackages("default")
-
+    const package = await this.getPackages("default");
     const userData = {
         ...data,
         panel_id: panelData.id,
         ref_id: null,
         coins: 0,
-        package: defaultpackage,
+        package,
         resources:{
             ram: '0',
             disk: '0',
             cpu: '0',
             servers: '0'
         },
-        created_at: Date.now(),
-        root_admin: panelData.attributes.root_admin
+        created_at: Date.now()
     }
 
     await db.collection('users').insertOne(userData);
-    console.log(panelData.attributes.relationships.servers)
-    console.log(panelData.attributes.relationships.servers.data)
     return Object.assign(userData, {
         servers: panelData.attributes.relationships.servers.data,
+        root_admin: panelData.attributes.root_admin,
         is_new: true
     });
 }

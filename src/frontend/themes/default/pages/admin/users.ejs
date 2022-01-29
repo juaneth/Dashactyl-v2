@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="Admin User Search Page • Dashactyl">
+        <title>Admin User Search | Dashactyl</title>
+    </head>
+    <body>
+        <%- include('../components/navbar') %>
+        <%# include sidebar html %>
+        <h1>User Search</h1>
+        <label for="search-query">Username</label><br>
+        <input type="text" id="search-query" name="search-query"><br>
+        <label for="search-submit">Search</label><br>
+        <input type="submit" value="Search" onsubmit="return search()"><br>
+        <section>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Manage</th>
+            </tr>
+        </section>
+        <% if (entries) { %>
+            <% for (const entry of entries) { %>
+                <tr>
+                    <td><%= entry.panel_id %></td>
+                    <td><%= entry.username %></td>
+                    <td><%= entry.email %></td>
+                    <td><a href="<%= data.url %>/admin/users/<%= entry.panel_id %>">Manage</a></td>
+                </tr>
+            <% } %>
+        <% } else { %>
+            <tr>
+                <td>No users searched.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        <% } %>
+        <script>
+            function search() {
+                const query = document.getElementById('search-query').value;
+                window.location.href = `/admin/users?q=${encodeURIComponent(query)}`;
+            }
+        </script>
+    </body>
+</html>

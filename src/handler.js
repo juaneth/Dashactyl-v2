@@ -1,4 +1,5 @@
 const db = require('./functions/db');
+const panel = require('./functions/panel');
 const { loadSettings, loadPages } = require('./functions');
 
 const settings = loadSettings();
@@ -6,12 +7,18 @@ const pages = loadPages();
 
 module.exports = async (request, reply) => {
     let account = request.session.get('account');
+    if (account) {
+        account = await db.fetchAccount(account.email);
+        if (!account) return request.destroySession(() => reply.redirect('/?err=INVALIDSESSION'));
 
-    if (
-        settings.referral.enabled &&
-        settings.referral.limit &&
-        request.query.aff
-    ) await checkReferral(request);
+        const panelData = (await panel.fetchAccount(account.email)).data[0].attributes;
+        account = Object.assign(account, {
+            root_admin: panelData.root_admin,
+            servers: panelData.relationships.servers.data,
+            is_new: false
+        });
+        request.session.set('account', account);
+    }
 
     if (request.url === '/') {
         return reply.view('home.ejs', { data: account, settings });
@@ -32,17 +39,15 @@ module.exports = async (request, reply) => {
         }
     }
 
-    const updated = await db.fetchAccount(account.email)
-    if (updated === null) {
-        if (page.type != 0) request.destroySession(() => reply.redirect('/'));
-    }
-    account = updated;
-
-    console.log(settings)
+    if (
+        settings.referral.enabled &&
+        settings.referral.limit &&
+        request.query.aff
+    ) await checkReferral(request);
 
     return reply.view(page.file, {
+        settings,
         data: account,
-        settings: settings,
         query: request.query,
         params: request.params
     });
