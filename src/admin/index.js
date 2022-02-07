@@ -14,12 +14,14 @@ module.exports = (api, _, done) => {
         { prefix: '/users' }
     );
 
-    api.get('/eggs', (request, reply) => require('./eggs')(request, reply));
-
     api.register(
         (ctx, _, done) => require('./packages')(ctx, done),
         { prefix: '/packages' }
     );
+
+    /*
+
+    api.get('/eggs', (request, reply) => require('./eggs')(request, reply));
 
     api.get('/api', (request, reply) => require('./api')(request, reply));
 
@@ -34,5 +36,6 @@ module.exports = (api, _, done) => {
         return done();
     });
 
+    */
     done();
 }

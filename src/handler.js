@@ -30,14 +30,7 @@ module.exports = async (request, reply) => {
     const page = pages[path];
     if (!page) return reply.view('err404.ejs');
 
-    if (page.type) {
-        if (!account) return reply.redirect('/login');
-        if (page.type === 2) {
-            if (!account.root_admin) return reply.view('err403.ejs', {
-                error: 'This is for panel administrators only.'
-            });
-        }
-    }
+    if (page.type && !account) return reply.redirect('/login');
 
     if (
         settings.referral.enabled &&

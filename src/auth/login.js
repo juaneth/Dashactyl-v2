@@ -79,6 +79,7 @@ module.exports = async (request, reply) => {
                     `&redirect_uri=${encodeURIComponent(discord.callback)}`
             }
         );
+        
         if (!res.ok) return reply.redirect('/login?err=INVALIDCODE');
 
         const tokenData = await res.json();
@@ -113,7 +114,28 @@ module.exports = async (request, reply) => {
 
         let account = await db.fetchAccount(userData.email);
         if (account) {
-            const panelData = (await panel.fetchAccount(userData.email)).data[0].attributes;
+            let panelData = await panel.fetchAccount(userData.email);
+            if (!panelData) {
+                let password = Math.random().toString(36).substring(2, 15) +
+                    Math.random().toString(36).substring(2, 15);
+
+                password = createHash('sha256')
+                    .update(password)
+                    .digest()
+                    .toString();
+
+                await panel.createAccount({
+                    username: `${userDAta.username}#${userData.discriminator}`,
+                    email: userData.email,
+                    first_name: userData.username,
+                    last_name: `#${userData.discriminator}`,
+                    language: 'en',
+                    password
+                });
+                panelData = await panel.fetchAccount(userData.email);
+            }
+
+            panelData = panelData.data[0].attributes;
             request.session.set('account', Object.assign(account, {
                 root_admin: panelData.root_admin,
                 servers: panelData.relationships.servers.data,
