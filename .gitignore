@@ -1,7 +1,0 @@
-node_modules/
-addons/
-
-*.test.*
-package-lock.json
-yarn-error.log
-src/settings.yml
