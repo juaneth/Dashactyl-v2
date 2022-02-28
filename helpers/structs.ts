@@ -15,6 +15,42 @@ export interface Account {
     */
 }
 
+export interface Egg {
+    name: string;
+    display: string;
+    minimum:{
+        memory: number;
+        disk: number;
+        cpu: number;
+    }
+    maximum:{
+        memory: number | null;
+        disk: number | null;
+        cpu: number | null;
+    }
+    info:{
+        egg: number;
+        docker_image: string;
+        startup: string;
+        environment:{ [key: string]: string }
+        feature_limits:{ [key: string]: number }
+    }
+    isDefault: boolean;
+    createdAt: number;
+}
+
+export interface Package {
+    name: string;
+    display: string;
+    ram: number;
+    disk: number;
+    cpu: number;
+    servers: number;
+    cost: number;
+    isDefault: boolean;
+    createdAt: number;
+}
+
 export interface PartialServer {
     id: number;
     identifier: string;
