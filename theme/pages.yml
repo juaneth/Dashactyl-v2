@@ -1,0 +1,9 @@
+home: home.ejs
+login: login.html
+signup: signup.html
+
+dashboard: dashboard.ejs
+createServer: createServer.ejs
+editServer: editServer.ejs
+
+account: account.ejs
