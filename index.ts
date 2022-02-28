@@ -23,6 +23,10 @@ app.register(session, {
 
 app.register((api, _, done) => routers.general(api, done));
 
+app.setErrorHandler((err, _, reply) => {
+    reply.view('error.ejs', { code: err.code, message: err.message });
+});
+
 app.listen(settings().port, (err, addr) => {
     if (err) throw err;
     console.log(`listening on port ${addr}`);
