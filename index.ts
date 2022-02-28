@@ -22,6 +22,7 @@ app.register(session, {
 });
 
 app.register((api, _, done) => routers.general(api, done));
+app.register((api, _, done) => routers.auth(api, done));
 
 app.setErrorHandler((err, _, reply) => {
     reply.view('error.ejs', { code: err.code, message: err.message });
