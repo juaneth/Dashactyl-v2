@@ -14,6 +14,7 @@ export default async function preload(cursor: MongoClient, dbName: string): Prom
     for (const coll of COLLECTIONS) {
         db.listCollections({ name: coll }).next((_, data) => {
             if (data) return;
+
             db.createCollection(coll, async (err, doc) => {
                 if (err) return log.error(err.message);
                 if (coll === 'eggs') await doc.insertOne(defaults.getDefaultEgg());
