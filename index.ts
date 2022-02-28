@@ -4,6 +4,7 @@ import pointOfView from 'point-of-view';
 import { join } from 'path';
 import * as ejs from 'ejs';
 import routers from './routers';
+import settings from './helpers/settings';
 
 const app = fastify();
 
@@ -22,7 +23,7 @@ app.register(session, {
 
 app.register((api, _, done) => routers.general(api, done));
 
-app.listen(3000, (err, addr) => {
+app.listen(settings().port, (err, addr) => {
     if (err) throw err;
     console.log(`listening on port ${addr}`);
 });
