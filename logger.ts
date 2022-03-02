@@ -1,5 +1,5 @@
 function print(base: string, message: string | string[]): void {
-    message = Array.isArray(message) ? message : [message];
+    message = Array.isArray(message) ? message : message.split('\n');
     const fmt = message.map(m => `\x1b[${base}\x1B[0m: ${m}`).join('\n');
     console.log(fmt);
 }
