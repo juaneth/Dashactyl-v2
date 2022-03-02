@@ -1,10 +1,9 @@
-import { MongoClient } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import load from '../helpers/settings';
 import log from '../logger';
 import preload from './preload';
 
-let mongo: MongoClient;
-let cursor: MongoClient;
+let cursor: Db;
 
 export async function init(): Promise<void> {
     const { debug, database } = load();
@@ -16,12 +15,13 @@ export async function init(): Promise<void> {
         `cluster: ${database.name}`
     ]);
 
-    mongo = new MongoClient(database.uri);
     try {
-        cursor = await mongo.connect();
+        const client = await new MongoClient(database.uri).connect();
         logDebug('initial connection established');
+        cursor = client.db(database.name);
+        logDebug('database opened');
 
-        await preload(cursor, database.name);
+        await preload(client, database.name);
         logDebug('preload complete');
         log.success('connected to database!');
     } catch (err) {
