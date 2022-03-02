@@ -19,7 +19,7 @@ export default async function preload(cursor: MongoClient, dbName: string): Prom
                 if (err) return log.error(err.message);
                 if (coll === 'eggs') await doc.insertOne(defaults.getDefaultEgg());
                 if (coll === 'packages') await doc.insertOne(defaults.getDefaultPackage());
-                log.info(`Created the '${coll}' collection`);
+                log.success(`Created the '${coll}' collection`);
             });
         });
     }

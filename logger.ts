@@ -8,6 +8,10 @@ function info(message: string | string[]): void {
     print('34mINFO', message);
 }
 
+function success(message: string | string[]): void {
+    print('32mSUCCESS', message);
+}
+
 function debug(message: string | string[]): void {
     print('1mDEBUG', message);
 }
@@ -27,6 +31,7 @@ function fatal(message: string | string[]): never {
 
 export default {
     info,
+    success,
     debug,
     warn,
     error,

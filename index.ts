@@ -4,6 +4,7 @@ import session from '@fastify/session';
 import pointOfView from 'point-of-view';
 import { join } from 'path';
 import * as ejs from 'ejs';
+import log from './logger';
 import routers from './routers';
 import load from './helpers/settings';
 
@@ -33,5 +34,5 @@ app.setErrorHandler((err, _, reply) => {
 
 app.listen(settings.port, (err, _) => {
     if (err) throw err;
-    console.log(`listening on http://localhost:${settings.port}`);
+    log.success(`listening on http://localhost:${settings.port}`);
 });

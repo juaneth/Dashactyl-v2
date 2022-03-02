@@ -23,7 +23,7 @@ export async function init(): Promise<void> {
 
         await preload(cursor, database.name);
         logDebug('preload complete');
-        log.info('connected to database!');
+        log.success('connected to database!');
     } catch (err) {
         log.fatal(err);
     }
