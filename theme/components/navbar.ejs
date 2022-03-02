@@ -8,18 +8,18 @@
             <li><a href="/earn/afk">AFK Page</a></li>
         </ul>
     </div>
-    <% if (data) { %>
+    <% if (user) { %>
         <button id="dropdown-button" data-dropdown-toggle="dropdown-options">
-            <img src="<% data.avatar %>" alt="user_avatar">
+            <img src="<% user.avatar %>" alt="user_avatar">
         </button>
         <div id="dropdown-options">
             <span>
-                <%= data.username %>
+                <%= user.username %>
             </span>
             <span>
-                <%= data.coins %> Coins
+                <%= user.resources.coins %> Coins
             </span>
-            <span>Package: <%= data.package %></span>
+            <span>Package: <%= user.package %></span>
             <ul>
                 <li><a href="/account">Account</a></li>
                 <li><a href="/earn/redeem">Redeem</a></li>
