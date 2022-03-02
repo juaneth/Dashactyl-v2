@@ -67,6 +67,12 @@ export interface Resource {
     coins:      number;
 }
 
+export interface Response<T> {
+    object:         string;
+    data?:          T[];
+    attributes?:    T;
+}
+
 export interface Session {
     user:       Account;
     servers:    PartialServer[];

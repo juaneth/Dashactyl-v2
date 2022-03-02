@@ -4,6 +4,7 @@ import load from '../helpers/settings';
 import { Account } from '../helpers/structs';
 import defaults from './defaults';
 import log from '../logger';
+import panel from '../panel';
 import preload from './preload';
 import { defaultUser } from '../helpers/permissions';
 
@@ -48,6 +49,15 @@ export async function createAccount(
 ) {
     const user = await getAccount(email);
     if (user) throw new Error('An account with these credentials already exists.');
+
+    const acc = await panel.getUser(email);
+    if (!acc.exists) await panel.createUser(
+        email,
+        username,
+        username,
+        email.split('@')[0],
+        password
+    );
 
     password = createHash('sha256')
         .update(password)
