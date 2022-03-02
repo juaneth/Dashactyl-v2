@@ -36,7 +36,7 @@ function getDefaultPackage(): Package {
     return {
         name: 'default-package',
         display: 'Default Package',
-        ram: 1024,
+        memory: 1024,
         disk: 1024,
         cpu: 100,
         servers: 1,

@@ -8,7 +8,7 @@ let cursor: MongoClient;
 
 export async function init(): Promise<void> {
     const { debug, database } = load();
-    const logDebug = (message: string | string[]): void => debug ? log.debug(message) : null;
+    const logDebug = (message: string | string[]) => debug ? log.debug(message) : null;
 
     log.info('Connecting to database...');
     logDebug([
@@ -25,6 +25,8 @@ export async function init(): Promise<void> {
         logDebug('preload complete');
         log.success('connected to database!');
     } catch (err) {
-        log.fatal(err);
+        log.fatal(String(err));
     }
 }
+
+export default {}
