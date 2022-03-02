@@ -9,7 +9,7 @@ async function _fetch<T = {}>(
     path: string,
     data?: object
 ): Promise<Response<T>> {
-    const body = data ? JSON.stringify(data) : null;
+    const body = data ? JSON.stringify(data) : undefined;
 
     const res = await fetch(pterodactyl.url + path, {
         method,
@@ -27,7 +27,7 @@ async function _fetch<T = {}>(
     throw new Error(`Pterodactyl could not be contacted (status: ${res.status}).`);
 }
 
-async function getUserRaw(email: string): Promise<Response<{}>> {
+async function getUserRaw(email: string): Promise<Response<any>> {
     return await _fetch('GET', `/api/application/users?filter[email]=${email}`);
 }
 
