@@ -1,6 +1,6 @@
 import { Account } from './structs';
 
-export const Permissions = [
+export const permissions = [
     'account.update',
     'account.delete',
     'account.enable-referral',

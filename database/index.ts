@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
-import preload from './preload';
 import load from '../helpers/settings';
 import log from '../logger';
+import preload from './preload';
 
 let mongo: MongoClient;
 let cursor: MongoClient;

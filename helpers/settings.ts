@@ -1,6 +1,6 @@
-import { parse } from 'yaml';
-import { join } from 'path';
 import { readFileSync } from 'fs';
+import { join } from 'path';
+import { parse } from 'yaml';
 
 export interface BaseSettings {
     port:           number;
