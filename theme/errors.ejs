@@ -1,0 +1,42 @@
+<%
+    const ERRORS = {
+        0:{
+            name: 'Unknown Error',
+            message: 'An unknown error occurred with Dashactyl. Please contact an administrator to resolve this.'
+        },
+        403:{
+            name: 'Unauthorized',
+            message: 'You are not permitted to view this page.'
+        },
+        404:{
+            name: 'Not Found',
+            message: 'The requested page could not be found.'
+        },
+        500:{
+            name: 'Internal Error',
+            message: 'An unknown error occurred with Dashactyl. Please contact an administrator to resolve this.'
+        }
+    }
+
+    const res = ERRROS[errorCode] || ERRORS[0];
+%>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="description" content="Internal Error • Dashactyl">
+        <title><%= res.name %> | Dashactyl</title>
+    </head>
+    <body>
+        <h1><%= errorCode %> | <%= res.name %></h1>
+        <p><%= res.message %></p>
+        <% if (error) { %>
+            <p><%= error %></p>
+        <% } %>
+        <% if (errorCode >= 500 && invite) { %>
+            <button onclick="window.location.href = '<%= invite %>'">Contact Administrators</button><br>
+        <% } %>
+        <button onclick="window.location.href = '/dashboard'">Go Back</button>
+    </body>
+</html>
