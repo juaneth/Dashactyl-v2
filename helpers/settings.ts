@@ -5,6 +5,7 @@ import { readFileSync } from 'fs';
 export interface BaseSettings {
     port:           number;
     debug:          boolean;
+    secret:         string;
     pterodactyl:{
         url:        string;
         key:        string;
