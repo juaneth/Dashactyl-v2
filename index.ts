@@ -4,6 +4,7 @@ import session from '@fastify/session';
 import pointOfView from 'point-of-view';
 import { join } from 'path';
 import * as ejs from 'ejs';
+import { init } from './database';
 import log from './logger';
 import routers from './routers';
 import load from './helpers/settings';
@@ -32,7 +33,11 @@ app.setErrorHandler((err, _, reply) => {
     reply.view('error.ejs', { code: err.code, message: err.message });
 });
 
-app.listen(settings.port, (err, _) => {
-    if (err) throw err;
-    log.success(`listening on http://localhost:${settings.port}`);
-});
+(async () => {
+    await init();
+
+    app.listen(settings.port, (err, _) => {
+        if (err) throw err;
+        log.success(`listening on http://localhost:${settings.port}`);
+    });
+})();
