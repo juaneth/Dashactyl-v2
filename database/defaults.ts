@@ -1,4 +1,4 @@
-import { Egg, Package } from '../helpers/structs';
+import { Egg, Package, Resource } from '../helpers/structs';
 
 function getDefaultEgg(): Egg {
     return {
@@ -46,7 +46,18 @@ function getDefaultPackage(): Package {
     }
 }
 
+function getDefaultResouces(): Resource {
+    return {
+        memory: 1024,
+        disk: 1024,
+        cpu: 10,
+        servers: 1,
+        coins: 0
+    }
+}
+
 export default {
     getDefaultEgg,
-    getDefaultPackage
+    getDefaultPackage,
+    getDefaultResouces
 }

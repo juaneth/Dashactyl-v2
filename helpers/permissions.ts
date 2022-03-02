@@ -27,6 +27,16 @@ export const permissions = [
     'admin.manage'
 ]
 
+export function defaultUser(): string[] {
+    return [
+        'account.update',
+        'account.delete',
+        'account.coupon-redeem',
+        'package.view',
+        'package.purchase'
+    ]
+}
+
 export function isAdmin(user: Account): boolean {
     return user.permissions.some(p => p.startsWith('admin.'));
 }
