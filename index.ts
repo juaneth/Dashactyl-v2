@@ -8,6 +8,7 @@ import { init } from './database';
 import log from './logger';
 import load from './helpers/settings';
 import routers from './routers';
+import validate from './validate';
 
 const app = fastify();
 const settings = load();
@@ -39,7 +40,13 @@ app.setErrorHandler((err, _, reply) => {
 });
 
 (async () => {
-    await init();
+    log.info('validating settings...');
+    try {
+        validate(settings);
+        await init();
+    } catch (err) {
+        log.fatal((err as Error).message);
+    }
 
     app.listen(settings.port, (err, _) => {
         if (err) throw err;
