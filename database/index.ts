@@ -1,7 +1,7 @@
 import { createHash } from 'crypto';
 import { Db, MongoClient } from 'mongodb';
 import load from '../helpers/settings';
-import { Account } from '../helpers/structs';
+import { Account, Settings } from '../helpers/structs';
 import defaults from './defaults';
 import log from '../logger';
 import panel from '../panel';
@@ -20,18 +20,26 @@ export async function init(): Promise<void> {
         `cluster: ${database.name}`
     ]);
 
-    try {
-        const client = await new MongoClient(database.uri).connect();
-        logDebug('initial connection established');
-        cursor = client.db(database.name);
-        logDebug('database opened');
+    const client = await new MongoClient(database.uri).connect();
+    logDebug('initial connection established');
+    cursor = client.db(database.name);
+    logDebug('database opened');
 
-        await preload(client, database.name);
-        logDebug('preload complete');
-        log.success('connected to database!');
-    } catch (err) {
-        log.fatal(String(err));
-    }
+    await preload(client, database.name);
+    logDebug('preload complete');
+    log.success('connected to database!');
+}
+
+export async function getSettings() {
+    const data = await cursor.collection<Settings>('settings').findOne();
+    if (!data) throw new Error('Settings could not be found.');
+    return data;
+}
+
+export async function updateSettings(data: Settings) {
+    const settings = Object.assign(await getSettings(), data);
+    return await cursor.collection<Settings>('settings')
+        .findOneAndUpdate({}, { $set: settings });
 }
 
 export async function fetchAccounts() {
@@ -100,5 +108,9 @@ export default {
         create: createAccount,
         update: updateAccount,
         delete: deleteAccount
+    },
+    settings:{
+        get: getSettings,
+        update: updateSettings
     }
 }
