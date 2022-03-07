@@ -14,7 +14,7 @@ export async function init(): Promise<void> {
     const { debug, database } = load();
     const logDebug = (message: string | string[]) => debug ? log.debug(message) : null;
 
-    log.info('Connecting to database...');
+    log.info('connecting to database...');
     logDebug([
         `uri: ${database.uri}`,
         `cluster: ${database.name}`

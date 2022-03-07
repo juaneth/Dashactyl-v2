@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "create-root":"node build/cmd/create.js",
+    "set-root": "node build/cmd/set.js"
   },
   "repository": {
     "type": "git",
