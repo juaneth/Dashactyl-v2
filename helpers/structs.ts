@@ -15,6 +15,14 @@ export interface Account {
     */
 }
 
+export interface Coupon {
+    code:       string;
+    uses:       number;
+    expiresAt:  number | null;
+    redeemed:   string[];
+    resources:  Resource;
+}
+
 export interface Egg {
     name:               string;
     display:            string;
@@ -59,6 +67,11 @@ export interface PartialServer {
     suspended:      boolean;
 }
 
+export interface Referral {
+    code:       string;
+    referred:   string[];
+}
+
 export interface Resource {
     memory:     number;
     disk:       number;
@@ -84,4 +97,32 @@ export enum SessionType {
     None,
     Returning,
     NewAccount
+}
+
+export interface Settings {
+    root:           string;
+    api:{
+        enabled:    boolean;
+        endpoints:  string[];
+        keys:       string[];
+    }
+    afk:{
+        enabled:    boolean;
+        coins:      number;
+    }
+    coupons:{
+        enabled:    boolean;
+    }
+    renewal:{
+        enabled:    boolean;
+        duration:   number;
+        suspend:    boolean;
+        fee:        number;
+    }
+    servers:{
+        enabled:    boolean;
+    }
+    users:{
+        enabled:    boolean;
+    }
 }
