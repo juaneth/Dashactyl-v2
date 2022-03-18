@@ -1,24 +1,43 @@
 {
   "name": "dashactyl-v2",
-  "version": "1.0.0",
-  "main": "src/app.js",
-  "repository": "https://github.com/Votion-Development/Dashactyl-v2.git",
-  "author": "Jamie_ <volcanomonster07@gmail.com>",
+  "version": "2.0.0",
+  "description": "The second version of Dashactyl",
+  "main": "index.ts",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node build/index.js",
+    "create-root":"node build/cmd/create.js",
+    "set-root": "node build/cmd/set.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Votion-Development/Dashactyl-v2.git"
+  },
+  "private": true,
+  "author": "Votion Development",
+  "contributors": [
+    "Devonte <https://github.com/devnote-dev>",
+    "v2Dev"
+  ],
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Votion-Development/Dashactyl-v2/issues"
+  },
+  "homepage": "https://github.com/Votion-Development/Dashactyl-v2#readme",
   "dependencies": {
     "@fastify/session": "^6.4.0",
-    "connect-mongodb-session": "^3.1.1",
     "ejs": "^3.1.6",
-    "fastify": "^3.25.3",
-    "fastify-cookie": "^5.5.0",
-    "fastify-formbody": "^5.2.0",
-    "mongodb": "^4.3.0",
+    "fastify": "^3.27.2",
+    "fastify-cookie": "^5.6.0",
+    "mongodb": "^4.4.0",
     "node-fetch": "^2.6.7",
-    "pino-pretty": "^7.3.0",
-    "point-of-view": "^5.0.0",
+    "point-of-view": "^5.1.0",
+    "tsc": "^2.0.4",
     "yaml": "^1.10.2"
   },
   "devDependencies": {
-    "eslint": "^8.6.0"
+    "@types/ejs": "^3.1.0",
+    "@types/node-fetch": "^2.6.1",
+    "ts-node": "^10.5.0"
   }
 }
