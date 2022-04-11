@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-        <meta name="description" content="Login Page • Dashactyl">
-        <title>Login | Dashactyl</title>
-    </head>
+    <%- include("./components/head.ejs", {title: "Login", description: "Login page" }) %>
+
     <body>
         <%#- include('./components/navbar') %>
         <form name="authLogin" action="/auth/login" method="POST" onsubmit="return validate()">

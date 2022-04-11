@@ -20,6 +20,16 @@ export default (api: FastifyInstance, done: (err?: Error | undefined) => void) =
         }
     });
 
+    api.get('/signup', (request, reply) => {
+        const session = request.session.get<Session>('account');
+        // TODO: valid check here too
+        if (session) {
+            reply.redirect('/dashboard');
+        } else {
+            reply.view('signup.ejs', {});
+        }
+    });
+
     api.register(require("fastify-static"), {
         root: resolve("./theme/public"),
         prefix: '/public/',
