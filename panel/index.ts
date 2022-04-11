@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-import load from '../helpers/settings';
-import { Response } from '../helpers/structs';
+import load from '../structures/settings';
+import { Response } from '../structures';
 
 const { pterodactyl } = load();
 

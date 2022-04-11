@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { Session } from '../helpers/structs';
+import { Session } from '../structures';
 
 export default (api: FastifyInstance, done: (err?: Error | undefined) => void) => {
     api.get('/', (request, reply) => {

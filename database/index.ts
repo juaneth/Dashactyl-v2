@@ -1,7 +1,7 @@
 import { createHash } from 'crypto';
 import { Db, MongoClient } from 'mongodb';
-import load from '../helpers/settings';
-import { Account, Settings } from '../helpers/structs';
+import load from '../structures/settings';
+import { Account, Settings } from '../structures';
 import defaults from './defaults';
 import log from '../logger';
 import panel from '../panel';

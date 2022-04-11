@@ -7,7 +7,7 @@ import formbody from 'fastify-formbody';
 import pointOfView from 'point-of-view';
 import { init } from './database';
 import log from './logger';
-import load from './helpers/settings';
+import load from './structures/settings';
 import routers from './routers';
 import validate from './validate';
 
