@@ -101,6 +101,14 @@ export async function deleteAccount(email: string) {
         .findOneAndDelete({ email });
 }
 
+export async function fetchKeys() {
+    return await cursor.collection('keys').find({}).toArray();
+}
+
+export async function getKey(code: string) {
+    return await cursor.collection('keys').findOne({ code });
+}
+
 export default {
     accounts:{
         fetch: fetchAccounts,
@@ -112,5 +120,9 @@ export default {
     settings:{
         get: getSettings,
         update: updateSettings
+    },
+    keys:{
+        fetch: fetchKeys,
+        get: getKey
     }
 }
