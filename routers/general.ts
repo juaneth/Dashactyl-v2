@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { Session } from '../helpers/structs';
+import { resolve } from 'path';
 
 export default (api: FastifyInstance, done: (err?: Error | undefined) => void) => {
     api.get('/', (request, reply) => {
@@ -18,6 +19,21 @@ export default (api: FastifyInstance, done: (err?: Error | undefined) => void) =
             reply.view('login.ejs', {});
         }
     });
+
+    api.get('/signup', (request, reply) => {
+        const session = request.session.get<Session>('account');
+        // TODO: valid check here too
+        if (session) {
+            reply.redirect('/dashboard');
+        } else {
+            reply.view('signup.ejs', {});
+        }
+    });
+
+    api.register(require("fastify-static"), {
+        root: resolve("./theme/public"),
+        prefix: '/public/',
+    })    
 
     done();
 }
