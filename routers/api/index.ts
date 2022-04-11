@@ -12,7 +12,10 @@ export default (api: FastifyInstance, done: (err?: Error | undefined) => void) =
         reply.send({ status: 'error', error: err.message });
     });
 
-    api.register((api, _, done) => userControl(api, done));
+    api.register(
+        (api, _, done) => userControl(api, done),
+        { prefix: '/api' }
+    );
 
     done();
 }
