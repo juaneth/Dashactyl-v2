@@ -4,3 +4,5 @@
 /cmd
 
 package-lock.json
+settings.yml
+*.js

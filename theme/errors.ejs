@@ -22,12 +22,7 @@
 %>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-        <meta name="description" content="Internal Error • Dashactyl">
-        <title><%= res.name %> | Dashactyl</title>
-    </head>
+    <%- include("./components/head.ejs", {title: res.name, description: "Internal Error" }) %>
     <body>
         <h1><%= code %> | <%= res.name %></h1>
         <p><%= res.message %></p>
