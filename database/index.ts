@@ -58,15 +58,7 @@ export async function createAccount(
     const user = await getAccount(email);
     if (user) throw new Error('An account with these credentials already exists.');
 
-    const acc = await panel.getUser(email);
-    if (!acc.exists) await panel.createUser(
-        email,
-        username,
-        username,
-        email.split('@')[0],
-        password
-    );
-
+    const acc = await panel.fetchOrCreateUser(username, email, password);
     password = createHash('sha256')
         .update(password)
         .digest()
