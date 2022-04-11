@@ -52,7 +52,7 @@ app.setErrorHandler((err, _, reply) => {
     }
 
     app.listen(settings.port, (err, _) => {
-        if (err) throw err;
+        if (err) log.fatal(err.stack || err.message);
         log.success(`listening on http://localhost:${settings.port}`);
     });
 })();
