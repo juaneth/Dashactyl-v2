@@ -1,9 +1,9 @@
 import * as ejs from 'ejs';
 import { join } from 'path';
 import fastify from 'fastify';
-import cookie from 'fastify-cookie';
+import { FastifyCookieOptions } from '@fastify/cookie'
+import cookie from '@fastify/cookie'
 import session from '@fastify/session';
-import formbody from 'fastify-formbody';
 import pointOfView from 'point-of-view';
 import { init } from './database';
 import log from './logger';
@@ -14,15 +14,19 @@ import validate from './validate';
 const app = fastify();
 const settings = load();
 
-app.register(cookie);
+app.register(cookie, {
+    secret: settings.secret,
+} as FastifyCookieOptions)
+
 app.register(session, {
     secret: settings.secret,
     saveUninitialized: true,
-    cookie:{
+    cookie: {
         secure: true
     }
 });
-app.register(formbody);
+
+app.register(require('@fastify/formbody'))
 
 app.register(pointOfView, {
     engine: { ejs },

@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Votion-Development/Dashactyl-v2#readme",
   "dependencies": {
+    "@fastify/formbody": "^6.0.0",
     "@fastify/session": "^6.4.0",
     "ejs": "^3.1.6",
     "fastify": "^3.27.2",
