@@ -1,6 +1,6 @@
 port: 3000
 debug: false
-secret: ""
+secret: "qwertyuiopasdfghjklzxcvbnm3874561"
 
 pterodactyl:
   url: ""
