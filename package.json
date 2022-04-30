@@ -1,46 +1,45 @@
 {
-  "name": "dashactyl-v2",
-  "version": "2.0.0",
-  "description": "The second version of Dashactyl",
-  "main": "index.ts",
-  "scripts": {
-    "build": "npx tsc",
-    "start": "node build/index.js",
-    "create-root": "node build/cmd/create.js",
-    "set-root": "node build/cmd/set.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Votion-Development/Dashactyl-v2.git"
-  },
-  "private": true,
-  "author": "Votion Development",
-  "contributors": [
-    "Devonte <https://github.com/devnote-dev>",
-    "Cblaze <https://github.com/blazecoding2009>"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Votion-Development/Dashactyl-v2/issues"
-  },
-  "homepage": "https://github.com/Votion-Development/Dashactyl-v2#readme",
-  "dependencies": {
-    "@fastify/formbody": "^6.0.0",
-    "@fastify/session": "^6.4.0",
-    "ejs": "^3.1.6",
-    "fastify": "^3.27.2",
-    "fastify-cookie": "^5.6.0",
-    "fastify-formbody": "^5.2.0",
-    "mongodb": "^4.4.0",
-    "node-fetch": "^2.6.7",
-    "path": "^0.12.7",
-    "point-of-view": "^5.1.0",
-    "tsc": "^2.0.4",
-    "yaml": "^1.10.2"
-  },
-  "devDependencies": {
-    "@types/ejs": "^3.1.0",
-    "@types/node-fetch": "^2.6.1",
-    "ts-node": "^10.5.0"
-  }
+    "name": "dashactyl-v2",
+    "version": "2.0.0",
+    "description": "The second version of Dashactyl",
+    "main": "index.ts",
+    "scripts": {
+        "build": "npx tsc",
+        "start": "node build/index.js",
+        "create-root": "node build/cmd/create.js",
+        "set-root": "node build/cmd/set.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Votion-Development/Dashactyl-v2.git"
+    },
+    "private": true,
+    "author": "Votion Development",
+    "contributors": [
+        "Devonte <https://github.com/devnote-dev>",
+        "Cblaze <https://github.com/blazecoding2009>"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Votion-Development/Dashactyl-v2/issues"
+    },
+    "homepage": "https://github.com/Votion-Development/Dashactyl-v2#readme",
+    "dependencies": {
+        "@fastify/formbody": "^6.0.0",
+        "@fastify/session": "^6.4.0",
+        "ejs": "^3.1.6",
+        "fastify": "^3.27.2",
+        "@fastify/cookie": "^6.0.0",
+        "mongodb": "^4.4.0",
+        "node-fetch": "^2.6.7",
+        "path": "^0.12.7",
+        "point-of-view": "^5.1.0",
+        "tsc": "^2.0.4",
+        "yaml": "^1.10.2"
+    },
+    "devDependencies": {
+        "@types/ejs": "^3.1.0",
+        "@types/node-fetch": "^2.6.1",
+        "ts-node": "^10.5.0"
+    }
 }
